@@ -1,14 +1,14 @@
 import axios from 'axios'
-const baseUrl = '/api/persons'
+const baseUrl = 'http://localhost:3001/api/transaction'
 
 const getAll = () => {
     return axios.get(baseUrl).then(r=>r.data)
 }
 
-const create = (newNum) => {
+const create = (transaction) => {
     return(
     axios
-        .post(baseUrl,newNum)
+        .post(baseUrl,transaction)
         .then(response => response.data)
     )
 }
@@ -25,5 +25,5 @@ const deleteNum = (id) => {
         .then(()=>{console.log("deleted")})
 }
 
-const personService = {getAll,create,update,deleteNum}
-export default personService
+const transService = {getAll,create,update,deleteNum}
+export default transService

@@ -1,13 +1,13 @@
 import React, {useState} from "react"
 import Notification from "./Notification"
-
+import transService from "../services/bank"
 
 const TransactionForm = () => {
 
   const [errorMessage, setErrorMessage] = useState(null)
   const [trans, setTrans] = useState({
-    from: "",
-    to: "",
+    sender: "",
+    receiver: "",
     amount: ""
   })
   // const [receiver, setReceiver ] = useState('')
@@ -15,15 +15,24 @@ const TransactionForm = () => {
   const handleInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log(name, value)
 
     setTrans({ ...trans, [name]: value})
   }
 
   const handleSubmit = (e) =>{
     e.preventDefault();
-    console.log("msg")
+    
+    transService
+      .create(trans)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(e =>
+        console.log(e)
+      )
+
     displayMsg("Transaction Completed")
+
   }
 
   const displayMsg = (msg) => {
@@ -40,16 +49,16 @@ const TransactionForm = () => {
             <div>
                 <label>
                 From:
-                <input type="text" name="fromaccno" id="fromaccno" value={trans.fromaccno}
-                onChange={handleInput}
+                <input type="text" name="sender" id="sender" value={trans.sender}
+                onChange={handleInput} placeholder="Enter Account No."
                 />
             </label>
             </div>
             <div>
                 <label>
                 To:
-                <input type="text" name="toaccno" id="toaccno" value={trans.toaccno} 
-                onChange={handleInput}  
+                <input type="text" name="receiver" id="receiver" value={trans.receiver} 
+                onChange={handleInput} placeholder="Enter Account No."
                 />
             </label>
             </div>
@@ -58,7 +67,7 @@ const TransactionForm = () => {
                 <label>
                 Amount:
                 <input type="number" name="amount" id="amount" value={trans.amount}
-                onChange={handleInput}
+                onChange={handleInput} placeholder="Enter the Amount"
                 />
             </label>
             </div>
@@ -74,7 +83,5 @@ const TransactionForm = () => {
     </div>
   )
 }
-
-
   
 export default TransactionForm
